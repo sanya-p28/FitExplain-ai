@@ -1,10 +1,22 @@
-import { UserResource } from "@clerk/types";
 import CornerElements from "./CornerElements";
 
-const ProfileHeader = ({ user }: { user: UserResource | null | undefined }) => {
+// This interface accepts exactly what the component needs,
+// making it compatible with both Clerk's Client and Server types.
+interface ProfileHeaderProps {
+  user: {
+    imageUrl: string;
+    fullName: string | null;
+    primaryEmailAddress?: {
+      emailAddress: string;
+    } | null;
+  } | null | undefined;
+}
+
+const ProfileHeader = ({ user }: ProfileHeaderProps) => {
   if (!user) return null;
+
   return (
-    <div className="mb-10 relative backdrop-blur-sm border border-border  p-6">
+    <div className="mb-10 relative backdrop-blur-sm border border-border p-6">
       <CornerElements />
 
       <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
@@ -18,7 +30,7 @@ const ProfileHeader = ({ user }: { user: UserResource | null | undefined }) => {
               />
             </div>
           ) : (
-            <div className="w-24 h-24 rounded-lg bg-gradient-to-br from-primary/30 to-secondary/30 flex items-center justify-center">
+            <div className="w-24 h-24 rounded-lg bg-linear-to-br from-primary/30 to-secondary/30 flex items-center justify-center">
               <span className="text-3xl font-bold text-primary">
                 {user.fullName?.charAt(0) || "U"}
               </span>
@@ -46,4 +58,5 @@ const ProfileHeader = ({ user }: { user: UserResource | null | undefined }) => {
     </div>
   );
 };
+
 export default ProfileHeader;
